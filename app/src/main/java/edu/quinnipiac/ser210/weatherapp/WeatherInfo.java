@@ -41,8 +41,7 @@ public class WeatherInfo extends AppCompatActivity {
     private View mConstraintLayout;
     private String color = "white";
 
-
-
+    //creates options for action bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -50,10 +49,12 @@ public class WeatherInfo extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    ////creates option for action bar
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            //changes background color when settings is clicked on
             case R.id.settings:
                 if (color == "white") {
                     mConstraintLayout.setBackgroundColor(Color.YELLOW);
@@ -69,10 +70,12 @@ public class WeatherInfo extends AppCompatActivity {
                     color = "white";
                 }
                 break;
+            //goes to next activity when help is clicked on
             case R.id.help:
                 Toast.makeText(this,"Help", Toast.LENGTH_LONG).show();
                 Intent intent3 = new Intent(WeatherInfo.this, Help.class);
                 startActivity(intent3);
+                //share option on action bar
             case R.id.share:
                 Intent intent = new Intent (Intent.ACTION_SEND);
                 intent.setType("text/plain");
@@ -85,6 +88,7 @@ public class WeatherInfo extends AppCompatActivity {
     }
 
     @SuppressLint("StaticFieldLeak")
+    //on create method
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +98,7 @@ public class WeatherInfo extends AppCompatActivity {
         String text = bundle.getString("mySpinnerValue");
         TextView location = (TextView) findViewById(R.id.loc_txt);
         location.setText(text);
+        //gets the information for JSON objects from RapidAPI
         new FetchWeatherInfo(){
             @SuppressLint("StaticFieldLeak")
             @Override
@@ -106,6 +111,7 @@ public class WeatherInfo extends AppCompatActivity {
                     TextView sym = (TextView) findViewById(R.id.symbolPhrase);
                     sym.setText(symbol);
 
+                    //changes image depending on weather
                     ImageView weatherImage = (ImageView) findViewById(R.id.weatherImg);
                     if (sym.getText() == "clear" || sym.getText() == "mostly clear") {
                         weatherImage.setImageResource(R.drawable.clear);
@@ -117,6 +123,7 @@ public class WeatherInfo extends AppCompatActivity {
                         weatherImage.setImageResource(R.drawable.overcast);
                     }
 
+                    //time, feels like, temperature, wind speed, and uv for weather in specific city
                     String time = information.getString("time");
                     TextView time1 = (TextView) findViewById(R.id.time);
                     time1.setText("Time: " + time);
@@ -143,6 +150,7 @@ public class WeatherInfo extends AppCompatActivity {
             }
         }.execute(text);
     }
+    //connects JSON objects
     class FetchWeatherInfo extends AsyncTask<String,Void,String> {
         @Override
         protected String doInBackground(String... strings) {
