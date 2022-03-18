@@ -2,28 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-    android:id="@+id/settings"
-    android:title="Settings"
-    app:showAsAction="ifRoom"
-    />
+        android:id="@+id/settings"
+        android:title="Settings"
+        app:showAsAction="ifRoom" />
 
-  <item
-   android:title="Help"
-   android:id="@+id/help"
-    app:showAsAction="ifRoom"
+    <item
+        android:id="@+id/help"
+        android:title="Help"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/app_bar_search"
+        android:title=""
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
     />
 
     <item
-   android:id="@+id/app_bar_search"
-    app:actionViewClass="android.widget.SearchView"
-    app:showAsAction="ifRoom|collapseActionView"
-        android:title="" />
-    />
-
-    <item
-    android:id="@+id/share"
-    android:title="Share"
-    app:showAsAction="ifRoom"
-   app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
-    />
+        android:id="@+id/share"
+        android:title="Share"
+        app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
+        app:showAsAction="ifRoom" />
 </menu>

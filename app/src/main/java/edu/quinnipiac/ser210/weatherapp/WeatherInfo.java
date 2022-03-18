@@ -72,12 +72,12 @@ public class WeatherInfo extends AppCompatActivity {
                 break;
             //goes to next activity when help is clicked on
             case R.id.help:
-                Toast.makeText(this,"Help", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Help", Toast.LENGTH_LONG).show();
                 Intent intent3 = new Intent(WeatherInfo.this, Help.class);
                 startActivity(intent3);
                 //share option on action bar
             case R.id.share:
-                Intent intent = new Intent (Intent.ACTION_SEND);
+                Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_TEXT, "This is a message for you.");
                 provider.setShareIntent(intent);
@@ -99,7 +99,7 @@ public class WeatherInfo extends AppCompatActivity {
         TextView location = (TextView) findViewById(R.id.loc_txt);
         location.setText(text);
         //gets the information for JSON objects from RapidAPI
-        new FetchWeatherInfo(){
+        new FetchWeatherInfo() {
             @SuppressLint("StaticFieldLeak")
             @Override
             protected void onPostExecute(String result) {
@@ -113,13 +113,13 @@ public class WeatherInfo extends AppCompatActivity {
 
                     //changes image depending on weather
                     ImageView weatherImage = (ImageView) findViewById(R.id.weatherImg);
-                    if (sym.getText() == "clear" || sym.getText() == "mostly clear") {
+                    if (sym.getText().equals("clear") || sym.getText().equals("mostly clear")) {
                         weatherImage.setImageResource(R.drawable.clear);
-                    } else if (sym.getText() == "party cloudy" || sym.getText() == "cloudy") {
+                    } else if (sym.getText().equals("party cloudy") || sym.getText().equals("cloudy")) {
                         weatherImage.setImageResource(R.drawable.partlycloudy);
-                    } else if (sym.getText() == "light rain") {
+                    } else if (sym.getText().equals("light rain")) {
                         weatherImage.setImageResource(R.drawable.lightrain);
-                    } else if (sym.getText() == "overcast") {
+                    } else if (sym.getText().equals("overcast")) {
                         weatherImage.setImageResource(R.drawable.overcast);
                     }
 
@@ -150,8 +150,9 @@ public class WeatherInfo extends AppCompatActivity {
             }
         }.execute(text);
     }
+
     //connects JSON objects
-    class FetchWeatherInfo extends AsyncTask<String,Void,String> {
+    class FetchWeatherInfo extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... strings) {
 
@@ -159,15 +160,15 @@ public class WeatherInfo extends AppCompatActivity {
             BufferedReader reader = null;
             String loc = null;
             String weather = null;
-            try{
+            try {
                 URL url = new URL("https://foreca-weather.p.rapidapi.com/location/search/" + strings[0]);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
-                urlConnection.setRequestProperty("X-RapidAPI-Key","59bf0f0383msh906ced7bb13c086p19f12djsn5cef8d0821e6");
+                urlConnection.setRequestProperty("X-RapidAPI-Key", "59bf0f0383msh906ced7bb13c086p19f12djsn5cef8d0821e6");
                 urlConnection.connect();
 
                 InputStream in = urlConnection.getInputStream();
-                if(in == null)
+                if (in == null)
                     return null;
 
                 reader = new BufferedReader(new InputStreamReader(in));
@@ -180,28 +181,28 @@ public class WeatherInfo extends AppCompatActivity {
                 url = new URL(url1 + loc);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
-                urlConnection.setRequestProperty("X-RapidAPI-Key","59bf0f0383msh906ced7bb13c086p19f12djsn5cef8d0821e6");
+                urlConnection.setRequestProperty("X-RapidAPI-Key", "59bf0f0383msh906ced7bb13c086p19f12djsn5cef8d0821e6");
                 urlConnection.connect();
 
                 in = urlConnection.getInputStream();
-                if(in == null)
+                if (in == null)
                     return null;
 
                 reader = new BufferedReader(new InputStreamReader(in));
                 weather = getStringFromBuffer(reader);
 
-            }catch(Exception e){
-                Log.e(LOG_TAG,"Error" + e.getMessage());
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Error" + e.getMessage());
                 return null;
-            }finally{
-                if (urlConnection != null){
+            } finally {
+                if (urlConnection != null) {
                     urlConnection.disconnect();
                 }
-                if (reader != null){
-                    try{
+                if (reader != null) {
+                    try {
                         reader.close();
-                    }catch (IOException e){
-                        Log.e(LOG_TAG,"Error" + e.getMessage());
+                    } catch (IOException e) {
+                        Log.e(LOG_TAG, "Error" + e.getMessage());
                         return null;
                     }
                 }

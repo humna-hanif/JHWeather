@@ -59,15 +59,15 @@ public class MainActivity extends AppCompatActivity {
                     color = "white";
                 }
                 break;
-                //goes to next activity when help is clicked on
+            //goes to next activity when help is clicked on
             case R.id.help:
-                Toast.makeText(this,"Help", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Help", Toast.LENGTH_LONG).show();
                 Intent intent3 = new Intent(MainActivity.this, Help.class);
                 startActivity(intent3);
 
                 //share option on action bar
             case R.id.share:
-                Intent intent = new Intent (Intent.ACTION_SEND);
+                Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_TEXT, "This is a message for you.");
                 provider.setShareIntent(intent);
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         mConstraintLayout = findViewById(R.id.layout);
 
         //creates cities in spinner
-        String[] arraySpinner = new String[] {
+        String[] arraySpinner = new String[]{
                 "NYC", "Los Angeles", "Washington D.C", "Miami", "Tokyo", "Hamden", "London", "Dubai", "Rome", "Sydney", "Barcelona", "Mumbai", "Athens", "Paris", "Machu Picchu", "Cairo", "San Francisco", "Austin", "Cape Town", "Istanbul"
         };
         s = (Spinner) findViewById(R.id.locationlist);
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         s.setAdapter(adapter);
 
     }
+
     //interaction for action bar
     @Override
     public void onUserInteraction() {
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     //on click method for search button
-    public void onClick(View view){
+    public void onClick(View view) {
         Intent intent2 = new Intent(MainActivity.this, WeatherInfo.class);
         text = s.getSelectedItem().toString();
         intent2.putExtra("mySpinnerValue", text);
