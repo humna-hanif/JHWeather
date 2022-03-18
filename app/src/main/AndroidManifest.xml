@@ -25,6 +25,11 @@
             android:exported="true">
 
         </activity>
+        <activity
+            android:name=".Help"
+            android:exported="true">
+
+        </activity>
     </application>
 
 </manifest>

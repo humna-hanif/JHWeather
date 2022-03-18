@@ -2,14 +2,25 @@ package edu.quinnipiac.ser210.weatherapp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ShareActionProvider;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,13 +37,59 @@ public class WeatherInfo extends AppCompatActivity {
     private static final String LOG_TAG = " ";
     private MainActivity mainActivity;
     private String url1 = "https://foreca-weather.p.rapidapi.com/current/";
+    private ShareActionProvider provider;
+    private View mConstraintLayout;
+    private String color = "white";
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        provider = (ShareActionProvider) MenuItemCompat.getActionProvider(menu.findItem(R.id.share));
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.settings:
+                if (color == "white") {
+                    mConstraintLayout.setBackgroundColor(Color.YELLOW);
+                    color = "yellow";
+                } else if (color == "yellow") {
+                    mConstraintLayout.setBackgroundColor(Color.RED);
+                    color = "red";
+                } else if (color == "red") {
+                    mConstraintLayout.setBackgroundColor(Color.BLUE);
+                    color = "blue";
+                } else {
+                    mConstraintLayout.setBackgroundColor(Color.WHITE);
+                    color = "white";
+                }
+                break;
+            case R.id.help:
+                Toast.makeText(this,"Help", Toast.LENGTH_LONG).show();
+                Intent intent3 = new Intent(WeatherInfo.this, Help.class);
+                startActivity(intent3);
+            case R.id.share:
+                Intent intent = new Intent (Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, "This is a message for you.");
+                provider.setShareIntent(intent);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @SuppressLint("StaticFieldLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-        getSupportActionBar().setTitle("J&H Weather App");
+        mConstraintLayout = findViewById(R.id.layout);
         Bundle bundle = getIntent().getExtras();
         String text = bundle.getString("mySpinnerValue");
         TextView location = (TextView) findViewById(R.id.loc_txt);
@@ -48,6 +105,17 @@ public class WeatherInfo extends AppCompatActivity {
                     String symbol = information.getString("symbolPhrase");
                     TextView sym = (TextView) findViewById(R.id.symbolPhrase);
                     sym.setText(symbol);
+
+                    ImageView weatherImage = (ImageView) findViewById(R.id.weatherImg);
+                    if (sym.getText() == "clear" || sym.getText() == "mostly clear") {
+                        weatherImage.setImageResource(R.drawable.clear);
+                    } else if (sym.getText() == "party cloudy" || sym.getText() == "cloudy") {
+                        weatherImage.setImageResource(R.drawable.partlycloudy);
+                    } else if (sym.getText() == "light rain") {
+                        weatherImage.setImageResource(R.drawable.lightrain);
+                    } else if (sym.getText() == "overcast") {
+                        weatherImage.setImageResource(R.drawable.overcast);
+                    }
 
                     String time = information.getString("time");
                     TextView time1 = (TextView) findViewById(R.id.time);
